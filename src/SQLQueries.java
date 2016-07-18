@@ -456,7 +456,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Ertrag01) AS Januar,SUM(Ertrag02) AS Februar,SUM(Ertrag03) AS Maerz,SUM(Ertrag04) AS April, SUM(Ertrag05) AS Mai,SUM(Ertrag06) AS Juni,SUM(Ertrag07) AS Juli,SUM(Ertrag08) AS August,SUM(Ertrag09) AS September,SUM(Ertrag10) AS Oktober,SUM(Ertrag11) AS November,SUM(Ertrag11) AS Dezember, SUM(Ertrag00) AS Ertrag_Gesamt FROM TFW_M001.KstUmsatz WHERE Nr='5410';";
+            return "SELECT SUM(Ertrag01) AS Januar,SUM(Ertrag02) AS Februar,SUM(Ertrag03) AS Maerz,SUM(Ertrag04) AS April, SUM(Ertrag05) AS Mai,SUM(Ertrag06) AS Juni,SUM(Ertrag07) AS Juli,SUM(Ertrag08) AS August,SUM(Ertrag09) AS September,SUM(Ertrag10) AS Oktober,SUM(Ertrag11) AS November,SUM(Ertrag11) AS Dezember, SUM(Ertrag00) AS Ertrag_Gesamt FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410';";
         }
     }
     
@@ -467,7 +467,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Ertrag01) AS Januar,SUM(Ertrag02) AS Februar,SUM(Ertrag03) AS Maerz,SUM(Ertrag04) AS April, SUM(Ertrag05) AS Mai,SUM(Ertrag06) AS Juni,SUM(Ertrag07) AS Juli,SUM(Ertrag08) AS August,SUM(Ertrag09) AS September,SUM(Ertrag10) AS Oktober,SUM(Ertrag11) AS November,SUM(Ertrag11) AS Dezember, SUM(Ertrag00) AS Ertrag_Gesamt FROM TFW_M001.KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
+            return "SELECT SUM(Ertrag01) AS Januar,SUM(Ertrag02) AS Februar,SUM(Ertrag03) AS Maerz,SUM(Ertrag04) AS April, SUM(Ertrag05) AS Mai,SUM(Ertrag06) AS Juni,SUM(Ertrag07) AS Juli,SUM(Ertrag08) AS August,SUM(Ertrag09) AS September,SUM(Ertrag10) AS Oktober,SUM(Ertrag11) AS November,SUM(Ertrag11) AS Dezember, SUM(Ertrag00) AS Ertrag_Gesamt FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
         }
     }
     
@@ -477,7 +477,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Umsatz00) AS Umsatz FROM TFW_M001.KstUmsatz WHERE Nr='5410';";
+            return "SELECT SUM(Umsatz00) AS Umsatz FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410';";
         }
     }
     
@@ -487,7 +487,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Umsatz00) AS Umsatz FROM TFW_M001.KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
+            return "SELECT SUM(Umsatz00) AS Umsatz FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
         }
     }
     
@@ -500,7 +500,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Umsatz01) AS Januar,SUM(Umsatz02) AS Februar,SUM(Umsatz03) AS Maerz,SUM(Umsatz04) AS April, SUM(Umsatz05) AS Mai,SUM(Umsatz06) AS Juni,SUM(Umsatz07) AS Juli,SUM(Umsatz08) AS August,SUM(Umsatz09) AS September,SUM(Umsatz10) AS Oktober,SUM(Umsatz11) AS November,SUM(Umsatz11) AS Dezember,SUM(Umsatz00) AS Umsatz_Gesamt FROM TFW_M001.KstUmsatz WHERE Nr='5410';";
+            return "SELECT SUM(Umsatz01) AS Januar,SUM(Umsatz02) AS Februar,SUM(Umsatz03) AS Maerz,SUM(Umsatz04) AS April, SUM(Umsatz05) AS Mai,SUM(Umsatz06) AS Juni,SUM(Umsatz07) AS Juli,SUM(Umsatz08) AS August,SUM(Umsatz09) AS September,SUM(Umsatz10) AS Oktober,SUM(Umsatz11) AS November,SUM(Umsatz11) AS Dezember,SUM(Umsatz00) AS Umsatz_Gesamt FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410';";
         }
     }
     
@@ -511,7 +511,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Umsatz01) AS Januar,SUM(Umsatz02) AS Februar,SUM(Umsatz03) AS Maerz,SUM(Umsatz04) AS April, SUM(Umsatz05) AS Mai,SUM(Umsatz06) AS Juni,SUM(Umsatz07) AS Juli,SUM(Umsatz08) AS August,SUM(Umsatz09) AS September,SUM(Umsatz10) AS Oktober,SUM(Umsatz11) AS November,SUM(Umsatz11) AS Dezember, SUM(Umsatz00) AS Umsatz_Gesamt FROM TFW_M001.KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
+            return "SELECT SUM(Umsatz01) AS Januar,SUM(Umsatz02) AS Februar,SUM(Umsatz03) AS Maerz,SUM(Umsatz04) AS April, SUM(Umsatz05) AS Mai,SUM(Umsatz06) AS Juni,SUM(Umsatz07) AS Juli,SUM(Umsatz08) AS August,SUM(Umsatz09) AS September,SUM(Umsatz10) AS Oktober,SUM(Umsatz11) AS November,SUM(Umsatz11) AS Dezember, SUM(Umsatz00) AS Umsatz_Gesamt FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
         }
     }
     
@@ -521,7 +521,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Umsatz00) AS Umsatz FROM TFW_M001.KstUmsatz WHERE Nr='5410';";
+            return "SELECT SUM(Umsatz00) AS Umsatz FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410';";
         }
     }
     
@@ -531,7 +531,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Umsatz00) AS Umsatz FROM TFW_M001.KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
+            return "SELECT SUM(Umsatz00) AS Umsatz FROM " +tableSuffix+ ".KstUmsatz WHERE Nr='5410' AND Year =" +"'" + this.searchFrom +"';";
         }
     }
     
@@ -544,7 +544,7 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Liste) AS VK, SUM(Ek) AS EK, SUM(Liste)-SUM(Ek) AS Marge_absolut, FLOOR((SUM(Liste)-SUM(Ek))/SUM(Ek)*100) AS Marge_relativ FROM TFW_M001.Art INNER JOIN TFW_M001.ArtLager ON TFW_M001.Art.Nr = TFW_M001.ArtLager.ArtNr WHERE TFW_M001.ArtLager.Kst='5410';";
+            return "SELECT SUM(Liste) AS VK, SUM(Ek) AS EK, SUM(Liste)-SUM(Ek) AS Marge_absolut, FLOOR((SUM(Liste)-SUM(Ek))/SUM(Ek)*100) AS Marge_relativ FROM " +tableSuffix+ ".Art INNER JOIN " +tableSuffix+ ".ArtLager ON " +tableSuffix+ ".Art.Nr = " +tableSuffix+ ".ArtLager.ArtNr WHERE " +tableSuffix+ ".ArtLager.Kst='5410';";
         }
     }
     
@@ -555,15 +555,13 @@ public class SQLQueries {
         }
         
         else{
-            return "SELECT SUM(Liste) AS VK, SUM(Ek) AS EK, SUM(Liste)-SUM(Ek) AS Marge_absolut, FLOOR((SUM(Liste)-SUM(Ek))/SUM(Ek)*100) AS Marge_relativ FROM TFW_M001.Art INNER JOIN TFW_M001.ArtLager ON TFW_M001.Art.Nr = TFW_M001.ArtLager.ArtNr WHERE TFW_M001.ArtLager.Kst='5410'AND TFW_M001.Art.Nr =" +"'" + this.searchFrom +"';";
+            return "SELECT SUM(Liste) AS VK, SUM(Ek) AS EK, SUM(Liste)-SUM(Ek) AS Marge_absolut, FLOOR((SUM(Liste)-SUM(Ek))/SUM(Ek)*100) AS Marge_relativ FROM " +tableSuffix+ ".Art INNER JOIN " +tableSuffix+ ".ArtLager ON " +tableSuffix+ ".Art.Nr = " +tableSuffix+ ".ArtLager.ArtNr WHERE " +tableSuffix+ ".ArtLager.Kst='5410'AND " +tableSuffix+ ".Art.Nr =" +"'" + this.searchFrom +"';";
         }
     }
     
     
     
-    
-    
-     
+ 
 }
 
 

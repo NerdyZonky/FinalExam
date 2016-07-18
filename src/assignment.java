@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import javax.swing.table.DefaultTableModel;
 
+
+
 /**@author Marco Schubert*/
 /**builds GUI of the main window;
 *gets values through poperties class from properties file;
@@ -22,15 +24,40 @@ public class assignment extends javax.swing.JFrame {
         SQLQueries sql = new SQLQueries();
         queries queries = new queries();
         
+        
+        
+        String searchFrom = prop.getSearch("searchFrom");
+        String searchTo = prop.getSearch("searchTo");
+        
+        System.out.println("searchFrom: " + searchFrom);
+        System.out.println("searchTo: " + searchTo);
+        
+        
+        
         if(prop.getView("view").equals("assignmentNotDone")){
-            this.jLabel2.setText("nicht erledige Aufträge");
-            this.offerNotDoneTable.setModel(queries.getAssignmentModel(sql.getSQLAssignmentNotDoneModel()));
-            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssigmentNotDone()));
-            this.offerNotDoneSumEK.setText(queries.sqlCommand(sql.getSQLSumEkAssigmentNotDone()));
-            this.offerNotDoneSumNetto.setText(queries.sqlCommand(sql.getSQLSumNettoAssigmentNotDone()));
-            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssigmentDone()));
-            this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssigmentAll()));
+            
+            if(searchFrom.equals("") && searchTo.equals("")){
+                this.offerNotDoneTable.setModel(queries.getAssignmentModel(sql.getSQLAssignmentNotDoneModel()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssigmentNotDone()));
+                this.offerNotDoneSumEK.setText(queries.sqlCommand(sql.getSQLSumEkAssigmentNotDone()));
+                this.offerNotDoneSumNetto.setText(queries.sqlCommand(sql.getSQLSumNettoAssigmentNotDone()));
+                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssigmentDone()));
+                this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssigmentAll()));
+                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
+                
+            }
+            
+            else{
+            sql.getSQLSearch(searchFrom, searchTo);
+            this.offerNotDoneTable.setModel(queries.getAssignmentModel(sql.getSQLAssigmentNotDoneModelSearch()));
+            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssigmentNotDoneSearch()));
+            this.offerNotDoneSumEK.setText(queries.sqlCommand(sql.getSQLSumEkAssigmentNotDoneSearch()));
+            this.offerNotDoneSumNetto.setText(queries.sqlCommand(sql.getSQLSumNettoAssigmentNotDoneSearch()));
+            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssigmentDoneSearch()));
+            this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssigmentAllSearch()));
             this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
+  
+            }  
         }
         
         if(prop.getView("view").equals("assignmentWithoutOffer")){
@@ -42,12 +69,24 @@ public class assignment extends javax.swing.JFrame {
             this.jLabel8.setVisible(false);
             this.offerNotDoneSumNetto.setVisible(false);
             
-            this.offerNotDoneTable.setModel(queries.getOfferWithoutAssignmentModel(sql.getSQLAssignmentWithoutOfferModel()));
-        
-            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithoutOffer()));
-            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithOffer()));
-            this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssignmentAllOfferWithoutAssignment()));
-            this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText())); 
+            
+            if(searchFrom.equals("") && searchTo.equals("")){
+                this.offerNotDoneTable.setModel(queries.getOfferWithoutAssignmentModel(sql.getSQLAssignmentWithoutOfferModel()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithoutOffer()));
+                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithOffer()));
+                this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssignmentAllOfferWithoutAssignment()));
+                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText())); 
+            }
+            
+            else{
+            sql.getSQLSearch(searchFrom, searchTo);
+            this.offerNotDoneTable.setModel(queries.getOfferWithoutAssignmentModel(sql.getSQLAssignmentWithoutOfferModelSearch()));
+            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithoutOfferSearch()));
+            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithOfferSearch()));
+            this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssignmentAllOfferWithoutAssignmentSearch()));
+            this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
+            }
+            
             
         }
         
@@ -81,20 +120,42 @@ public class assignment extends javax.swing.JFrame {
             this.offerNotDoneSumEK.setVisible(false);
             this.jLabel8.setVisible(false);
             this.offerNotDoneSumNetto.setVisible(false);
-            this.offerNotDoneTable.setModel(queries.getPunctualDeliveryModel(sql.getSQLPunctualDeliveryModel()));
-            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSumNotPunctualPunctualDelivery()));
-            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLSumPunctualPunctualDelivery()));
-            this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
-  
-            /**cast offerNotDoneAmount and countOfferDone to int and add them 
-            together to get total amount*/
-            int ondaINT = Integer.valueOf(this.offerNotDoneAmount.getText());
-            int codINT = Integer.valueOf(this.countOfferDone.getText());
-            int resINT = ondaINT + codINT; 
             
-            /**cast amount back to string*/
-            this.offerAll.setText(String.valueOf(resINT));
-            this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
+            
+            if(searchFrom.equals("") && searchTo.equals("")){
+                this.offerNotDoneTable.setModel(queries.getPunctualDeliveryModel(sql.getSQLPunctualDeliveryModel()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSumNotPunctualPunctualDelivery()));
+                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLSumPunctualPunctualDelivery()));
+                     
+                /**cast offerNotDoneAmount and countOfferDone to int and add them 
+                together to get total amount*/
+                int ondaINT = Integer.valueOf(this.offerNotDoneAmount.getText());
+                int codINT = Integer.valueOf(this.countOfferDone.getText());
+                int resINT = ondaINT + codINT; 
+            
+                /**cast amount back to string*/
+                this.offerAll.setText(String.valueOf(resINT));
+                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
+ 
+            }
+            
+            else{
+                sql.getSQLSearch(searchFrom, searchTo);
+                this.offerNotDoneTable.setModel(queries.getPunctualDeliveryModel(sql.getSQLPunctualDeliveryModelSearch()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSumNotPunctualPunctualDeliverySearch()));
+                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLSumPunctualPunctualDeliverySearch()));
+
+                /**cast offerNotDoneAmount and countOfferDone to int and add them 
+                together to get total amount*/
+                int ondaINT = Integer.valueOf(this.offerNotDoneAmount.getText());
+                int codINT = Integer.valueOf(this.countOfferDone.getText());
+                int resINT = ondaINT + codINT; 
+            
+                /**cast amount back to string*/
+                this.offerAll.setText(String.valueOf(resINT));
+                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
+            
+            }
         }
         
         
@@ -118,7 +179,19 @@ public class assignment extends javax.swing.JFrame {
             this.jLabel4.setVisible(false);
             this.offerNotDoneSearchTo.setVisible(false);
             
-            this.offerNotDoneTable.setModel(queries.getGrossProfitModel(sql.getSQLGrossProfitModel()));
+            if(searchFrom.equals("")){
+                this.offerNotDoneTable.setModel(queries.getGrossProfitModel(sql.getSQLGrossProfitModel()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLGrossProfitTotal()));
+                
+ 
+            }
+            
+            else{
+                sql.getSQLYear(searchFrom);
+                this.offerNotDoneTable.setModel(queries.getGrossProfitModel(sql.getSQLGrossProfitModelSearch()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLGrossProfitTotalSearch()));
+
+            }
 
 
         }
@@ -143,17 +216,25 @@ public class assignment extends javax.swing.JFrame {
             this.jLabel4.setVisible(false);
             this.offerNotDoneSearchTo.setVisible(false);
             
-            this.offerNotDoneTable.setModel(queries.getSalesModel(sql.getSQLSalesModel()));
+            if(searchFrom.equals("")){
+                this.offerNotDoneTable.setModel(queries.getSalesModel(sql.getSQLSalesModel()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSalesTotal()));
+                
+ 
+            }
+            
+            else{
+                sql.getSQLYear(searchFrom);
+                this.offerNotDoneTable.setModel(queries.getSalesModel(sql.getSQLSalesModelSearch()));
+                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSalesTotalSearch()));
+            }
 
 
         }
-        
-        
+      
         if(prop.getView("view").equals("margin")){
             this.jLabel2.setText("Marge");
             this.jLabel3.setText("Nr.");
-            
-            
             this.jLabel5.setVisible(false);
             this.offerNotDoneAmount.setVisible(false);
             this.jLabel6.setVisible(false);
@@ -169,11 +250,20 @@ public class assignment extends javax.swing.JFrame {
             this.jLabel4.setVisible(false);
             this.offerNotDoneSearchTo.setVisible(false);
             
-            this.offerNotDoneTable.setModel(queries.getMarginModel(sql.getSQLMarginModel()));
+            if(searchFrom.equals("")){
+                this.offerNotDoneTable.setModel(queries.getMarginModel(sql.getSQLMarginModel()));
+ 
+                
+ 
+            }
+            
+            else{
+                sql.getSQLYear(searchFrom);
+                this.offerNotDoneTable.setModel(queries.getMarginModel(sql.getSQLMarginModelSearch()));
+            }
 
         }
-        
-        
+    
         
     }
     
@@ -189,7 +279,6 @@ public class assignment extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         offerNotDoneTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -212,6 +301,7 @@ public class assignment extends javax.swing.JFrame {
         countOfferDone = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -241,14 +331,6 @@ public class assignment extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu.png"))); // NOI18N
-        jButton1.setBorderPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         offerNotDoneTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -274,8 +356,8 @@ public class assignment extends javax.swing.JFrame {
             }
         });
 
-        offerNotDoneSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/database(2).png"))); // NOI18N
-        offerNotDoneSearch.setText("Suche");
+        offerNotDoneSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/research(1).png"))); // NOI18N
+        offerNotDoneSearch.setToolTipText("Durchsuche Datenbank");
         offerNotDoneSearch.setBorder(null);
         offerNotDoneSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,6 +403,16 @@ public class assignment extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left-arrow(3).png"))); // NOI18N
+        jMenuItem4.setText("Menü");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
+
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/xlsBIG.png"))); // NOI18N
         jMenuItem1.setText("Export");
@@ -336,7 +428,7 @@ public class assignment extends javax.swing.JFrame {
         jMenu2.setText("Edit");
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setIcon(new javax.swing.ImageIcon("/home/marco/Downloads/settings.png")); // NOI18N
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settings.png"))); // NOI18N
         jMenuItem2.setText("Settings");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -354,72 +446,67 @@ public class assignment extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(12, 12, 12)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(offerNotDoneAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                    .addComponent(offerNotDonePercent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(offerAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(countOfferDone, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(offerNotDoneSumEK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(offerNotDoneSumNetto, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(142, 142, 142)))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(offerNotDoneAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                            .addComponent(offerNotDonePercent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(offerAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(countOfferDone, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(offerNotDoneSumEK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(offerNotDoneSumNetto, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(154, 154, 154))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
                         .addComponent(offerNotDoneSearchFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel4)
-                        .addGap(8, 8, 8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(offerNotDoneSearchTo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(offerNotDoneSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 580, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(offerNotDoneSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(271, 271, 271)
+                .addGap(295, 295, 295)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(25, 25, 25)
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(offerNotDoneSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(offerNotDoneSearchFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(offerNotDoneSearchTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                    .addComponent(offerNotDoneSearchFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(offerNotDoneSearchTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(offerNotDoneSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(offerNotDoneAmount)
@@ -441,178 +528,31 @@ public class assignment extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        launcher launch = new launcher();
-        this.setVisible(false);
-        launch.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void offerNotDoneSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offerNotDoneSearchActionPerformed
         
-       
+     
         SQLQueries sql = new SQLQueries();
         queries queries = new queries();
    
         String searchFrom = this.offerNotDoneSearchFrom.getText();
         String searchTo = this.offerNotDoneSearchTo.getText();
         
+        prop.setSearch(searchFrom, searchTo);
         
-        if(prop.getView("view").equals("assignmentNotDone")){
-            
-            if(searchFrom.equals("") && searchTo.equals("")){
-                this.offerNotDoneTable.setModel(queries.getAssignmentModel(sql.getSQLAssignmentNotDoneModel()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssigmentNotDone()));
-                this.offerNotDoneSumEK.setText(queries.sqlCommand(sql.getSQLSumEkAssigmentNotDone()));
-                this.offerNotDoneSumNetto.setText(queries.sqlCommand(sql.getSQLSumNettoAssigmentNotDone()));
-                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssigmentDone()));
-                this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssigmentAll()));
-                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
-                
-            }
-            
-            else{
-            sql.getSQLSearch(searchFrom, searchTo);
-            this.offerNotDoneTable.setModel(queries.getAssignmentModel(sql.getSQLAssigmentNotDoneModelSearch()));
-            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssigmentNotDoneSearch()));
-            this.offerNotDoneSumEK.setText(queries.sqlCommand(sql.getSQLSumEkAssigmentNotDoneSearch()));
-            this.offerNotDoneSumNetto.setText(queries.sqlCommand(sql.getSQLSumNettoAssigmentNotDoneSearch()));
-            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssigmentDoneSearch()));
-            this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssigmentAllSearch()));
-            this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
-  
-            }  
-        }
+        this.dispose(); //destroy actual window
         
-    
-        if(prop.getView("view").equals("assignmentWithoutOffer")){
-            
-            if(searchFrom.equals("") && searchTo.equals("")){
-                this.offerNotDoneTable.setModel(queries.getOfferWithoutAssignmentModel(sql.getSQLAssignmentWithoutOfferModel()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithoutOffer()));
-                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithOffer()));
-                this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssignmentAllOfferWithoutAssignment()));
-                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText())); 
-            }
-            
-            else{
-            sql.getSQLSearch(searchFrom, searchTo);
-            this.offerNotDoneTable.setModel(queries.getOfferWithoutAssignmentModel(sql.getSQLAssignmentWithoutOfferModelSearch()));
-            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithoutOfferSearch()));
-            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLCountAssignmentWithOfferSearch()));
-            this.offerAll.setText(queries.sqlCommand(sql.getSQLCountAssignmentAllOfferWithoutAssignmentSearch()));
-            this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
-            }
-        }
-        
-        if(prop.getView("view").equals("negativeStock")){
-            this.offerNotDoneTable.setModel(queries.getNegativeStockModel(sql.getSQLNegativeStockModel()));
-            this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLCountNegativeStock()));
-            this.offerNotDonePercent.setText(queries.sqlCommand(sql.getSQLSumNegativeStock()));
-            this.countOfferDone.setText(queries.sqlCommand(sql.getSQLSumPostitiveStock()));
-            this.offerAll.setText(queries.sqlCommand(sql.getSQCountNullStock()));
-            this.offerNotDoneSumEK.setText(queries.sqlCommand(sql.getSQLSumPostitiveStock()));
-
-        }
-        
-        if(prop.getView("view").equals("punctualDelivery")){
-            if(searchFrom.equals("") && searchTo.equals("")){
-                this.offerNotDoneTable.setModel(queries.getPunctualDeliveryModel(sql.getSQLPunctualDeliveryModel()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSumNotPunctualPunctualDelivery()));
-                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLSumPunctualPunctualDelivery()));
-                     
-                /**cast offerNotDoneAmount and countOfferDone to int and add them 
-                together to get total amount*/
-                int ondaINT = Integer.valueOf(this.offerNotDoneAmount.getText());
-                int codINT = Integer.valueOf(this.countOfferDone.getText());
-                int resINT = ondaINT + codINT; 
-            
-                /**cast amount back to string*/
-                this.offerAll.setText(String.valueOf(resINT));
-                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
- 
-            }
-            
-            else{
-                sql.getSQLSearch(searchFrom, searchTo);
-                this.offerNotDoneTable.setModel(queries.getPunctualDeliveryModel(sql.getSQLPunctualDeliveryModelSearch()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSumNotPunctualPunctualDeliverySearch()));
-                this.countOfferDone.setText(queries.sqlCommand(sql.getSQLSumPunctualPunctualDeliverySearch()));
-
-                /**cast offerNotDoneAmount and countOfferDone to int and add them 
-                together to get total amount*/
-                int ondaINT = Integer.valueOf(this.offerNotDoneAmount.getText());
-                int codINT = Integer.valueOf(this.countOfferDone.getText());
-                int resINT = ondaINT + codINT; 
-            
-                /**cast amount back to string*/
-                this.offerAll.setText(String.valueOf(resINT));
-                this.offerNotDonePercent.setText(queries.roundPercentValues(this.offerNotDoneAmount.getText(), this.offerAll.getText()));
-            
-            }
-            
-        }
-        
-        
-        if(prop.getView("view").equals("grossProfit")){
-            if(searchFrom.equals("")){
-                this.offerNotDoneTable.setModel(queries.getGrossProfitModel(sql.getSQLGrossProfitModel()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLGrossProfitTotal()));
-                
- 
-            }
-            
-            else{
-                sql.getSQLYear(searchFrom);
-                this.offerNotDoneTable.setModel(queries.getGrossProfitModel(sql.getSQLGrossProfitModelSearch()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLGrossProfitTotalSearch()));
-
-        
-            
-            }
-            
-        }
-        
-       
-       if(prop.getView("view").equals("sales")){
-            if(searchFrom.equals("")){
-                this.offerNotDoneTable.setModel(queries.getSalesModel(sql.getSQLSalesModel()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSalesTotal()));
-                
- 
-            }
-            
-            else{
-                sql.getSQLYear(searchFrom);
-                this.offerNotDoneTable.setModel(queries.getSalesModel(sql.getSQLSalesModelSearch()));
-                this.offerNotDoneAmount.setText(queries.sqlCommand(sql.getSQLSalesTotalSearch()));
-
-        
-            
-            }
-            
-        }
-       
-       
-       if(prop.getView("view").equals("margin")){
-            if(searchFrom.equals("")){
-                this.offerNotDoneTable.setModel(queries.getMarginModel(sql.getSQLMarginModel()));
- 
-                
- 
-            }
-            
-            else{
-                sql.getSQLYear(searchFrom);
-                this.offerNotDoneTable.setModel(queries.getMarginModel(sql.getSQLMarginModelSearch()));
-       }
-            
-        }
+        assignment ass = new assignment(); //create new window
+        ass.setVisible(true); //show new window
     
     }//GEN-LAST:event_offerNotDoneSearchActionPerformed
 
     private void offerNotDoneSearchFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offerNotDoneSearchFromActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_offerNotDoneSearchFromActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         queries queries = new queries();
@@ -628,12 +568,13 @@ public class assignment extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(assignment.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        launcher launch = new launcher();
+        this.setVisible(false);
+        launch.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * 
@@ -675,7 +616,6 @@ public class assignment extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel countOfferDone;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel10;
@@ -696,6 +636,7 @@ public class assignment extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel offerAll;

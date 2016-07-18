@@ -11,6 +11,8 @@ public class launcher extends javax.swing.JFrame {
 
     public launcher() {
         initComponents();
+        properties prop = new properties();
+        prop.setSearch("", "");
     }
 
     @SuppressWarnings("unchecked")

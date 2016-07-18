@@ -211,9 +211,9 @@ public class properties {
      
      
      
-public void setSearch(String search,String searchFrom, String searchTo){
+public void setSearch(String searchFrom, String searchTo){
         
-        this.search = search;
+
         this.searchFrom = searchFrom;
         this.searchTo = searchTo;
         
@@ -226,9 +226,8 @@ public void setSearch(String search,String searchFrom, String searchTo){
 		output = new FileOutputStream("config.search");
 
 		// set the properties value
-                this.prop.setProperty("search", this.search);
 		this.prop.setProperty("searchFrom", this.searchFrom);
-		this.prop.setProperty("SearchTo", this.searchTo);
+		this.prop.setProperty("searchTo", this.searchTo);
 		// save properties to project root folder
 		prop.store(output, null);
 
@@ -264,10 +263,6 @@ public void setSearch(String search,String searchFrom, String searchTo){
 	} catch (IOException ex) {
 		ex.printStackTrace();
 	}
-        
-        if("search".equals(name)){
-            return prop.getProperty("search");
-        }
         
         if("searchFrom".equals(name)){
             return prop.getProperty("searchFrom");
